@@ -87,7 +87,6 @@ func (p *KVStoreService) Get(key string, value *string) error {
 		*value = v
 		return nil
 	}
-
 	return fmt.Errorf("not found")
 }
 func (p *KVStoreService) Set(kv [2]string, reply *struct{}) error {
