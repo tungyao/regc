@@ -7,7 +7,7 @@ import (
 )
 
 func TestMains(t *testing.T) {
-	regc.ServiceStart(":1234 release")
+	regc.ServiceStart(":1234")
 
 }
 func TestWatch(t *testing.T) {
