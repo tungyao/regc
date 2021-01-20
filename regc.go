@@ -54,7 +54,7 @@ func ServiceStart(host string) {
 	}
 }
 
-func (ks *KVStoreClient) Exec() chan bool {
+func (ks *KVStoreClient) Exec(timeSe int) chan bool {
 	client, err := rpc.Dial("tcp", ks.host)
 	if err != nil {
 		log.Fatal("dialing:", err)
@@ -67,7 +67,7 @@ func (ks *KVStoreClient) Exec() chan bool {
 				new(struct{}),
 			)
 			log.Println("call once")
-			<-time.After(time.Second * 5)
+			<-time.After(time.Second * time.Duration(timeSe))
 		}
 	}()
 	err = client.Call("KVStoreService.Watch", Data{
@@ -108,10 +108,9 @@ func (p *KVStoreService) Watch(d Data, keyChanged *struct{}) error {
 	var isStop = make(chan bool)
 	go func() {
 		for {
-			log.Println("loop")
+			log.Println("loop :", d.Uuid)
 			select {
-			case key := <-ch:
-				log.Println("get data", key)
+			case _ = <-ch:
 			case <-time.After(time.Duration(d.TimeSe) * time.Second):
 				isStop <- true
 			}
