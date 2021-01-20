@@ -1,4 +1,4 @@
-module regc
+module github.com/tungyao/regc
 
 go 1.15
 
