@@ -66,7 +66,6 @@ func (ks *KVStoreClient) Exec(callTimeSe int, loopTimeSe int) chan bool {
 				"KVStoreService.Set", [2]string{keyChanged, "abc-value"},
 				new(struct{}),
 			)
-			log.Println("call once")
 			<-time.After(time.Second * time.Duration(callTimeSe))
 		}
 	}()
@@ -108,7 +107,6 @@ func (p *KVStoreService) Watch(d Data, keyChanged *struct{}) error {
 	var isStop = make(chan bool)
 	go func() {
 		for {
-			log.Println("loop :", d.Uuid)
 			select {
 			case _ = <-ch:
 			case <-time.After(time.Duration(d.TimeSe) * time.Second):
@@ -125,7 +123,6 @@ func (p *KVStoreService) Watch(d Data, keyChanged *struct{}) error {
 		ok, v := <-isStop
 		if ok && v {
 			// 已经断开了连接
-			log.Println("disconnect ", d.Uuid)
 			delete(p.m, d.Uuid)
 			break
 		}
